@@ -7,8 +7,10 @@ export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   let isAuthenticated = false;
   let isAdmin = false;
+
   const { data } = await userService.getSession();
-  if (data) {
+
+  if (data?.user) {
     isAuthenticated = true;
     isAdmin = data.user.role === Roles.admin;
   }
@@ -18,14 +20,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  //   user is authenticated but role admin
-  // user cant not visit user dashboarde
+  // user is authenticated but role admin
   if (isAdmin && pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/admin-dashboard", request.url));
   }
 
-  //   user is authenticated and role admin
-  // user cant not visit user admin-dashboarde
+  // user is authenticated and role not admin
   if (!isAdmin && pathname.startsWith("/admin-dashboard")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
