@@ -12,7 +12,13 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import Link from "next/link";
 import { ModeToggle } from "./ModeToggle";
 
@@ -55,8 +61,16 @@ const Navbar = ({
       url: "/about",
     },
     {
+      title: "Contact",
+      url: "/contact",
+    },
+    {
       title: "Blog",
       url: "/blog",
+    },
+    {
+      title: "Dashboard",
+      url: "/dashboard",
     },
   ],
   auth = {
@@ -71,6 +85,8 @@ const Navbar = ({
         {/* Desktop Menu */}
         <nav className="hidden items-center justify-between lg:flex">
           <div className="flex items-center gap-6">
+            {/* Logo */}
+
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
@@ -93,6 +109,8 @@ const Navbar = ({
         {/* Mobile Menu */}
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
+            {/* Logo */}
+
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon">
@@ -100,6 +118,9 @@ const Navbar = ({
                 </Button>
               </SheetTrigger>
               <SheetContent className="overflow-y-auto">
+                <SheetHeader>
+                  <SheetTitle></SheetTitle>
+                </SheetHeader>
                 <div className="flex flex-col gap-6 p-4">
                   <Accordion
                     type="single"
@@ -112,10 +133,10 @@ const Navbar = ({
                   <div className="flex flex-col gap-3">
                     <ModeToggle />
                     <Button asChild variant="outline">
-                      <a href={auth.login.url}>{auth.login.title}</a>
+                      <Link href={auth.login.url}>{auth.login.title}</Link>
                     </Button>
                     <Button asChild>
-                      <a href={auth.signup.url}>{auth.signup.title}</a>
+                      <Link href={auth.signup.url}>{auth.signup.title}</Link>
                     </Button>
                   </div>
                 </div>
@@ -133,9 +154,10 @@ const renderMenuItem = (item: MenuItem) => {
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
         asChild
+        href={item.url}
         className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
       >
-        <Link href={item.url}> {item.title} </Link>
+        <Link href={item.url}>{item.title}</Link>
       </NavigationMenuLink>
     </NavigationMenuItem>
   );
@@ -148,4 +170,5 @@ const renderMobileMenuItem = (item: MenuItem) => {
     </Link>
   );
 };
+
 export { Navbar };
